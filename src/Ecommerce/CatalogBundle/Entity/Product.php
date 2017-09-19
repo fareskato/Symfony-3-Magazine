@@ -26,6 +26,7 @@ class Product
      * @var string
      *
      * @ORM\Column(name="title", type="string", length=255)
+     * @Assert\NotBlank()
      */
     private $title;
 
@@ -33,6 +34,7 @@ class Product
      * @var string
      *
      * @ORM\Column(name="url_key", type="string", length=255, unique=true)
+     * @Assert\NotBlank()
      */
     private $urlKey;
 
@@ -40,6 +42,7 @@ class Product
      * @var string
      *
      * @ORM\Column(name="price", type="decimal", precision=10, scale=2)
+     * @Assert\NotBlank()
      */
     private $price;
 
@@ -47,6 +50,7 @@ class Product
      * @var string
      *
      * @ORM\Column(name="sku", type="string", length=255, unique=true)
+     * @Assert\NotBlank()
      */
     private $sku;
 
@@ -61,6 +65,7 @@ class Product
      * @var int
      *
      * @ORM\Column(name="qty", type="integer")
+     * @Assert\Range(min=1)
      */
     private $qty;
 

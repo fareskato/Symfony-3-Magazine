@@ -1,19 +1,15 @@
-{% extends 'base.html.twig' %}
+{% extends 'admin/master.html.twig' %}
 
 {% block body %}
     <h1>Products list</h1>
 
-    <table>
+    <table class="table table-bordered table-hover dataTable">
         <thead>
             <tr>
                 <th>Id</th>
                 <th>Title</th>
-                <th>Urlkey</th>
                 <th>Price</th>
-                <th>Sku</th>
-                <th>Description</th>
                 <th>Qty</th>
-                <th>Image</th>
                 <th>Onsale</th>
                 <th>Actions</th>
             </tr>
@@ -23,31 +19,16 @@
             <tr>
                 <td><a href="{{ path('product_show', { 'id': product.id }) }}">{{ product.id }}</a></td>
                 <td>{{ product.title }}</td>
-                <td>{{ product.urlKey }}</td>
                 <td>{{ product.price }}</td>
-                <td>{{ product.sku }}</td>
-                <td>{{ product.description }}</td>
                 <td>{{ product.qty }}</td>
-                <td>{{ product.image }}</td>
                 <td>{% if product.onsale %}Yes{% else %}No{% endif %}</td>
                 <td>
-                    <ul>
-                        <li>
-                            <a href="{{ path('product_show', { 'id': product.id }) }}">show</a>
-                        </li>
-                        <li>
-                            <a href="{{ path('product_edit', { 'id': product.id }) }}">edit</a>
-                        </li>
-                    </ul>
+                    <a href="{{ path('product_show', { 'id': product.id }) }}"class="btn btn-primary"><i class="fa fa-eye"></i></a>
+                    <a href="{{ path('product_edit', { 'id': product.id }) }}" class="btn btn-success"><i class="fa fa-edit"></i></a>
+                    <a href="{{ path('product_delete', { 'id': product.id }) }}" class="btn btn-danger"><i class="fa fa-close"></i></a>
                 </td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
-
-    <ul>
-        <li>
-            <a href="{{ path('product_new') }}">Create a new product</a>
-        </li>
-    </ul>
 {% endblock %}
