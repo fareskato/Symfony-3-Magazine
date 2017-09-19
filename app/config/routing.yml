@@ -1,0 +1,10 @@
+app:
+    resource: '@AppBundle/Controller/'
+    type: annotation
+# FOS user bundle
+fos_user:
+    resource: "@FOSUserBundle/Resources/config/routing/all.xml"
+
+# Lipp_Imagine bundle
+_liip_imagine:
+    resource: "@LiipImagineBundle/Resources/config/routing.xml"

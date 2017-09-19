@@ -1,0 +1,7 @@
+<div class="box-header">
+    <div class="pull-left">
+        {% for top_button in top_buttons %}
+            <a href="{{ top_button.url }}" class="{{ top_button.class }}"><i class="fa {{ top_button.icon }}"></i>{{ top_button.value }}</a>
+        {% endfor %}
+    </div>
+</div>
