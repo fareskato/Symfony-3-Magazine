@@ -16,12 +16,13 @@
         {% for category in categories %}
             <tr>
                 <td><a href="{{ path('category_show', { 'id': category.id }) }}">{{ category.id }}</a></td>
-                <td><img src="{{ asset('uploads/category/'~category.image) | imagine_filter('thumb100x80') }}"></td>
+                <td>{% if category.image %}<img src="{{ asset('uploads/category/'~category.image) | imagine_filter('thumb100x80') }}">{% endif %}</td>
                 <td>{{ category.title }}</td>
                 <td>{{ category.urlKey }}</td>
                 <td>
+                    <a href="{{ path('category_show', { 'id': category.id }) }}" class="btn btn-primary"><i class="fa fa-eye"></i></a>
                     <a href="{{ path('category_edit', { 'id': category.id }) }}" class="btn btn-success"><i class="fa fa-edit"></i></a>
-                    <a href="{{ path('category_show', { 'id': category.id }) }}" class="btn btn-danger"><i class="fa fa-close"></i></a>
+                    <a href="{{ path('category_delete', { 'id': category.id }) }}" class="btn btn-danger"><i class="fa fa-close"></i></a>
                 </td>
             </tr>
         {% endfor %}

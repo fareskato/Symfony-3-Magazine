@@ -6,6 +6,7 @@ use Ecommerce\CatalogBundle\Entity\Category;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -56,12 +57,16 @@ class CategoryController extends Controller
                 $category->setImage($name);
             }
             $em = $this->getDoctrine()->getManager();
+            // If the url key is empty : create is from the title
            if($category->getUrlKey() === null){
                $category->setUrlKey($em->getRepository(Category::class)->createUrlKey($category->getTitle()));
            }
-            $em->persist($category);
+           // If the user entered url key
+            $category->setUrlKey($em->getRepository(Category::class)->createUrlKey($category->getUrlKey()));
+           // Create record
+           $em->persist($category);
             $em->flush();
-
+            // Redirect to the list page
             return $this->redirectToRoute('category_index', array('id' => $category->getId()));
         }
 
@@ -74,16 +79,13 @@ class CategoryController extends Controller
     /**
      * Finds and displays a category entity.
      *
-     * @Route("admin/category/{id}", name="category_show")
+     * @Route("category/{id}", name="category_show")
      * @Method("GET")
      */
     public function showAction(Category $category)
     {
-        $deleteForm = $this->createDeleteForm($category);
-
         return $this->render('@EcommerceCatalog/Default/category/show.html.twig', array(
             'category' => $category,
-            'delete_form' => $deleteForm->createView(),
         ));
     }
 
@@ -95,50 +97,53 @@ class CategoryController extends Controller
      */
     public function editAction(Request $request, Category $category)
     {
-        $deleteForm = $this->createDeleteForm($category);
+        // Get entity manager
+        $em = $this->getDoctrine()->getManager();
+        // Old image
+        $oldImage = $category->getImage();
+        if($oldImage){
+            $category->setImage(new File($this->getParameter('ecommerce_images_directory') .'/'. $oldImage));
+        }
+//        $deleteForm = $this->createDeleteForm($category);
         $editForm = $this->createForm('Ecommerce\CatalogBundle\Form\CategoryType', $category);
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
+            if($image = $category->getImage()){
+                $name = $this->get('ecommerce_catalog.image_uloader')->upload($image);
+                $category->setImage($name);
+            } elseif ($oldImage){
+                $category->setImage($oldImage);
+            }
+            // If the user changed the url key
+            if(isset($_POST['ecommerce_catalogbundle_category']['urlKey'])){
+                $category->setUrlKey($em->getRepository(Category::class)->createUrlKey($category->getUrlKey()));
+            }
             $this->getDoctrine()->getManager()->flush();
-
-            return $this->redirectToRoute('category_edit', array('id' => $category->getId()));
+            return $this->redirectToRoute('category_index');
         }
 
         return $this->render('@EcommerceCatalog/Default/category/edit.html.twig', array(
             'category' => $category,
             'edit_form' => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
+//            'delete_form' => $deleteForm->createView(),
         ));
     }
 
     /**
      * Deletes a category entity.
      *
-     * @Route("admin/category/{id}", name="category_delete")
-     * @Method("DELETE")
+     * @Route("admin/category/{id}/delete", name="category_delete")
+     * @Method("GET")
      */
     public function deleteAction(Request $request, Category $category)
     {
-        $form = $this->createDeleteForm($category);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->remove($category);
             $em->flush();
-        }
-
         return $this->redirectToRoute('category_index');
     }
-
-    /**
-     * Creates a form to delete a category entity.
-     *
-     * @param Category $category The category entity
-     *
-     * @return \Symfony\Component\Form\Form The form
-     */
+    /*
     private function createDeleteForm(Category $category)
     {
         return $this->createFormBuilder()
@@ -147,4 +152,5 @@ class CategoryController extends Controller
             ->getForm()
         ;
     }
+    */
 }
