@@ -1,0 +1,2 @@
+parameters:
+    ecommerce_images_directory: "%kernel.root_dir%/../web/uploads/category"

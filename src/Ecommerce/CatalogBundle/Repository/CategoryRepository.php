@@ -10,4 +10,12 @@ namespace Ecommerce\CatalogBundle\Repository;
  */
 class CategoryRepository extends \Doctrine\ORM\EntityRepository
 {
+    /**
+     * @param $title
+     * @return string
+     * Generate slug form name or title
+     */
+    public function createUrlKey($title){
+        return implode('-',explode(' ',$title));
+    }
 }

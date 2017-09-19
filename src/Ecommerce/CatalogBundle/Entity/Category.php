@@ -4,6 +4,7 @@ namespace Ecommerce\CatalogBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Category
@@ -26,6 +27,7 @@ class Category
      * @var string
      *
      * @ORM\Column(name="title", type="string", length=255)
+     * @Assert\NotBlank()
      */
     private $title;
 
@@ -47,6 +49,7 @@ class Category
      * @var string
      *
      * @ORM\Column(name="image", type="string", length=255, nullable=true)
+     * @Assert\File(mimeTypes={"image/jpeg", "image/png", "image/jpg"}, mimeTypesMessage="Please upload the correct format")
      */
     private $image;
 

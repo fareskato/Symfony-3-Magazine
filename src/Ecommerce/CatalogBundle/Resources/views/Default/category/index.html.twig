@@ -1,16 +1,14 @@
-{% extends 'base.html.twig' %}
+{% extends 'admin/master.html.twig' %}
 
 {% block body %}
     <h1>Categories list</h1>
-
-    <table>
+    <table class="table table-bordered table-hover dataTable">
         <thead>
             <tr>
                 <th>Id</th>
+                <th>Image</th>
                 <th>Title</th>
                 <th>Urlkey</th>
-                <th>Description</th>
-                <th>Image</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -18,28 +16,15 @@
         {% for category in categories %}
             <tr>
                 <td><a href="{{ path('category_show', { 'id': category.id }) }}">{{ category.id }}</a></td>
+                <td><img src="{{ asset('uploads/category/'~category.image) | imagine_filter('thumb100x80') }}"></td>
                 <td>{{ category.title }}</td>
                 <td>{{ category.urlKey }}</td>
-                <td>{{ category.description }}</td>
-                <td>{{ category.image }}</td>
                 <td>
-                    <ul>
-                        <li>
-                            <a href="{{ path('category_show', { 'id': category.id }) }}">show</a>
-                        </li>
-                        <li>
-                            <a href="{{ path('category_edit', { 'id': category.id }) }}">edit</a>
-                        </li>
-                    </ul>
+                    <a href="{{ path('category_edit', { 'id': category.id }) }}" class="btn btn-success"><i class="fa fa-edit"></i></a>
+                    <a href="{{ path('category_show', { 'id': category.id }) }}" class="btn btn-danger"><i class="fa fa-close"></i></a>
                 </td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
-
-    <ul>
-        <li>
-            <a href="{{ path('category_new') }}">Create a new category</a>
-        </li>
-    </ul>
 {% endblock %}

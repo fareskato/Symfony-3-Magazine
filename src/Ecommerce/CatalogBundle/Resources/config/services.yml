@@ -2,3 +2,8 @@ services:
 #    ecommerce_catalog.example:
 #        class: Ecommerce\CatalogBundle\Example
 #        arguments: ["@service_id", "plain_value", "%parameter%"]
+
+    ecommerce_catalog.image_uloader:
+        class: Ecommerce\CatalogBundle\Service\ImageUploader
+        # use ecommerce_images_directory as parameter in parameters.yml
+        arguments: ["%ecommerce_images_directory%"]
