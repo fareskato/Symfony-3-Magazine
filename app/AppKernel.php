@@ -20,6 +20,7 @@ class AppKernel extends Kernel
             new FOS\UserBundle\FOSUserBundle(),
             // Liip_imagine bundle
             new Liip\ImagineBundle\LiipImagineBundle(),
+            new Ecommerce\CatalogBundle\EcommerceCatalogBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {
