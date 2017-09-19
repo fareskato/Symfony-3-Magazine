@@ -23,10 +23,21 @@ security:
 
             logout:       true
             anonymous:    true
+        # Add security for create/update/delete actions
+        guard_new_edit:
+            pattern: /(new)|(edit)
+            methods: [GET, POST]
+            anonymous: ~
+            http_basic: ~
+        guard_delete:
+            pattern: /
+            methods: [DELETE]
+            anonymous: ~
+            http_basic: ~
 
     access_control:
         - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/admin, role: ROLE_ADMIN }
+        - { path: ^/admin, role: ROLE_ADMIN, methods: [DELETE] }
 #        - { path: ^/admin/, role: IS_AUTHENTICATED_FULLY }
