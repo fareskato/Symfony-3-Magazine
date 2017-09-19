@@ -1,24 +1,36 @@
 {% extends 'default/front.html.twig' %}
 {% block body %}
     <div class="container">
+    {% if products_bestsellers %}
         <div class="row">
+            <div class="col-xs-12"><h2 class="page-header text-center">Best Sellers</h2></div>
             <div class="col-xs-12">
-                <h2 class="page-header text-center">fares</h2>
-                <div class="col-md-3 text-center">hdhd</div>
-                <div class="col-md-3 text-center">qwdwqd</div>
-                <div class="col-md-3 text-center">qwdqwd</div>
-                <div class="col-md-3 text-center">dqdwq</div>
+                {% for product in products_bestsellers.getItems() %}
+                    <div class="col-md-3 text-center">
+                        <img src="{{ asset('img/missing-image.png') | imagine_filter('thumb260x257') }}">
+                        <h2><a href="{{ product.path }}">{{ product.name }}</a></h2>
+                        <p>${{ product.price }}</p>
+                        <div><a class="btn btn-primary" href="{{ product.add_to_cart_url }}">Add to cart</a></div>
+                    </div>
+                {% endfor %}
             </div>
         </div>
+    {% endif %}
         <br>
+    {% if products_onsale %}
         <div class="row">
-            <div class="col-xs-12 text-center">
-                <h2 class="page-header text-center">fares</h2>
-                <div class="col-md-3 text-center">hdhd</div>
-                <div class="col-md-3 text-center">qwdwqd</div>
-                <div class="col-md-3 text-center">qwdqwd</div>
-                <div class="col-md-3 text-center">dqdwq</div>
+            <div class="col-xs-12"> <h2 class="page-header text-center">On Sale</h2></div>
+            <div class="col-xs-12">
+                {% for product in products_onsale.getItems() %}
+                    <div class="col-md-3 text-center">
+                        <img src="{{ asset('img/missing-image.png') | imagine_filter('thumb260x257') }}">
+                        <h2><a href="{{ product.path }}">{{ product.name }}</a></h2>
+                        <p>${{ product.price }}</p>
+                        <div><a class="btn btn-primary" href="{{ product.add_to_cart_url }}">Add to cart</a></div>
+                    </div>
+                {% endfor %}
             </div>
         </div>
+    {% endif %}
     </div>
 {% endblock %}

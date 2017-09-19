@@ -41,6 +41,13 @@ twig:
     form_themes:
         - 'bootstrap_3_layout.html.twig'
 
+    globals:
+        category_menu: '@category_menu'
+        customer_menu: '@customer_menu'
+        checkout_menu: '@checkout_menu'
+        products_bestsellers: '@products_bestsellers'
+        products_onsale: '@products_onsale'
+
 # Doctrine Configuration
 doctrine:
     dbal:

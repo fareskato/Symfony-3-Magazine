@@ -6,6 +6,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * Frontend Controller
+ */
 class DefaultController extends Controller
 {
     /**
@@ -17,7 +20,7 @@ class DefaultController extends Controller
         return $this->render('default/index.html.twig');
     }
     /**
-     * @Route("/customers", name="customers")
+     * @Route("/customer-services", name="customer-services")
      */
     public function customersAction(Request $request)
     {
@@ -41,7 +44,7 @@ class DefaultController extends Controller
         return $this->render('default/about.html.twig');
     }
     /**
-     * @Route("/orders", name="orders")
+     * @Route("/orders-and-returns", name="orders-and-returns")
      */
     public function ordersAction(Request $request)
     {
@@ -49,7 +52,7 @@ class DefaultController extends Controller
         return $this->render('default/orders.html.twig');
     }
     /**
-     * @Route("/privacy", name="privacy")
+     * @Route("/privacy-policy", name="privacy-policy")
      */
     public function privacyAction(Request $request)
     {
