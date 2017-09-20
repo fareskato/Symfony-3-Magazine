@@ -1,43 +1,37 @@
-{% extends 'base.html.twig' %}
+{% extends 'default/front.html.twig' %}
 
 {% block body %}
-    <h1>Category</h1>
-
-    <table>
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ category.id }}</td>
-            </tr>
-            <tr>
-                <th>Title</th>
-                <td>{{ category.title }}</td>
-            </tr>
-            <tr>
-                <th>Urlkey</th>
-                <td>{{ category.urlKey }}</td>
-            </tr>
-            <tr>
-                <th>Description</th>
-                <td>{{ category.description }}</td>
-            </tr>
-            <tr>
-                <th>Image</th>
-                <td>{{ category.image }}</td>
-            </tr>
-        </tbody>
-    </table>
-
-    {% for product in category.products %}
-        {{ dump(product) }}
-    {% endfor %}
-
-    {#<ul>#}
-        {#<li>#}
-            {#<a href="{{ path('category_index') }}">Back to the list</a>#}
-        {#</li>#}
-        {#<li>#}
-            {#<a href="{{ path('category_edit', { 'id': category.id }) }}">Edit</a>#}
-        {#</li>#}
-    {#</ul>#}
+    <div class="container" style="margin-top: 31px">
+        <div class="row">
+            <div class="col-xs-12 text-center">
+                <img class="img-responsive"  src="{{ asset('uploads/category/'~category.image) | imagine_filter('thumb1920x550') }}">
+            </div>
+        </div>
+        <div class="row">
+            <h1 class="text-center page-header">{{ category.title }}</h1>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <p>{{ category.description }}</p>
+            </div>
+        </div>
+        {% if category.products | length %}
+        <div class="row">
+            <div class="col-xs-12">
+                {% for product in category.products %}
+                    <div class="col-md-3 text-center">
+                        <img src="{{ asset('uploads/category/'~product.image) | imagine_filter('thumb260x257')  }}">
+                        <h2><a href="{{ path('product_show', {'id' : product.id}) }}">{{ product.title }}</a></h2>
+                        <p>${{ product.price }}</p>
+                        <div><a class="btn btn-primary" href="">Add to cart</a></div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% else %}
+            <div class="row">
+                <div class="col-xs-12 text-center"><p>There are no products assigned to this category</p></div>
+            </div>
+        {% endif %}
+    </div>
 {% endblock %}

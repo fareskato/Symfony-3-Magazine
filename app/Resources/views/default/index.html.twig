@@ -8,9 +8,7 @@
                 {% for product in products_bestsellers.getItems() %}
                     <div class="col-md-3 text-center">
                         <img src="{{ asset('img/missing-image.png') | imagine_filter('thumb260x257') }}">
-                        <h2><a href="{{ product.path }}">{{ product.name }}</a></h2>
-                        <p>${{ product.price }}</p>
-                        <div><a class="btn btn-primary" href="{{ product.add_to_cart_url }}">Add to cart</a></div>
+
                     </div>
                 {% endfor %}
             </div>
@@ -26,7 +24,7 @@
                         <img src="{{ asset('img/missing-image.png') | imagine_filter('thumb260x257') }}">
                         <h2><a href="{{ product.path }}">{{ product.name }}</a></h2>
                         <p>${{ product.price }}</p>
-                        <div><a class="btn btn-primary" href="{{ product.add_to_cart_url }}">Add to cart</a></div>
+                        <div><a class="btn btn-primary" href="">Add to cart</a></div>
                     </div>
                 {% endfor %}
             </div>

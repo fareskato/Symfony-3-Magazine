@@ -7,3 +7,10 @@ services:
         class: Ecommerce\CatalogBundle\Service\ImageUploader
         # use ecommerce_images_directory as parameter in parameters.yml
         arguments: ["%ecommerce_images_directory%"]
+    # Override the core module services
+    ecommerce_catalog.category_menu:
+        class: Ecommerce\CatalogBundle\Service\Menu\Category
+        arguments: ["@doctrine.orm.entity_manager", "@router"]
+    ecommerce_catalog.onsale:
+        class: Ecommerce\CatalogBundle\Service\Menu\OnSale
+        arguments: ["@doctrine.orm.entity_manager", "@router"]
