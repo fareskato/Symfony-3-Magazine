@@ -5,7 +5,9 @@ namespace Ecommerce\CatalogBundle\Controller;
 use Ecommerce\CatalogBundle\Entity\Product;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Product controller.
@@ -44,11 +46,16 @@ class ProductController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            // Handle image upload
+            if($image = $product->getImage()){
+                $name = $this->get('ecommerce_catalog.image_uloader')->upload($image);
+                // Save image in DB
+                $product->setImage($name);
+            }
             $em = $this->getDoctrine()->getManager();
             $em->persist($product);
             $em->flush();
-
-            return $this->redirectToRoute('product_show', array('id' => $product->getId()));
+            return $this->redirectToRoute('product_index');
         }
 
         return $this->render('@EcommerceCatalog/Default/product/new.html.twig', array(
@@ -65,11 +72,10 @@ class ProductController extends Controller
      */
     public function showAction(Product $product)
     {
-        $deleteForm = $this->createDeleteForm($product);
+//        $deleteForm = $this->createDeleteForm($product);
 
         return $this->render('@EcommerceCatalog/Default/product/show.html.twig', array(
             'product' => $product,
-            'delete_form' => $deleteForm->createView(),
         ));
     }
 
@@ -81,56 +87,43 @@ class ProductController extends Controller
      */
     public function editAction(Request $request, Product $product)
     {
-        $deleteForm = $this->createDeleteForm($product);
+        $oldImage = $product->getImage();
+        if($oldImage){
+            $product->setImage(new File($this->getParameter('ecommerce_images_directory'). '/'. $oldImage));
+        }
+//        $deleteForm = $this->createDeleteForm($product);
         $editForm = $this->createForm('Ecommerce\CatalogBundle\Form\ProductType', $product);
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
+            if($image = $product->getImage()){
+                $name = $this->get('ecommerce_catalog.image_uloader')->upload($image);
+                $product->setImage($name);
+            } elseif ($oldImage){
+                $product->setImage($oldImage);
+            }
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('product_edit', array('id' => $product->getId()));
+            return $this->redirectToRoute('product_index');
         }
 
         return $this->render('@EcommerceCatalog/Default/product/edit.html.twig', array(
             'product' => $product,
             'edit_form' => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
         ));
     }
 
     /**
      * Deletes a product entity.
      *
-     * @Route("/{id}", name="product_delete")
-     * @Method("DELETE")
+     * @Route("/{id}/delete", name="product_delete")
      */
     public function deleteAction(Request $request, Product $product)
     {
-        $form = $this->createDeleteForm($product);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->remove($product);
             $em->flush();
-        }
 
         return $this->redirectToRoute('product_index');
-    }
-
-    /**
-     * Creates a form to delete a product entity.
-     *
-     * @param Product $product The product entity
-     *
-     * @return \Symfony\Component\Form\Form The form
-     */
-    private function createDeleteForm(Product $product)
-    {
-        return $this->createFormBuilder()
-            ->setAction($this->generateUrl('product_delete', array('id' => $product->getId())))
-            ->setMethod('DELETE')
-            ->getForm()
-        ;
     }
 }

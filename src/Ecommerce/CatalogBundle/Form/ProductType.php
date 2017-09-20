@@ -2,6 +2,7 @@
 
 namespace Ecommerce\CatalogBundle\Form;
 
+use Ecommerce\CatalogBundle\Entity\Category;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\MoneyType;
@@ -18,7 +19,7 @@ class ProductType extends AbstractType
         $builder->add('title')->add('urlKey')->add('price', MoneyType::class, array(
             'divisor' => 100,
         ))->add('sku')->add('description')->add('qty')->add('category', EntityType::class, [
-            'class' => 'Ecommerce\CatalogBundle\Entity\Category',
+            'class' => Category::class,
             'placeholder' => 'Select category'
         ])->add('image')->add('onsale');
     }
